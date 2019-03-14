@@ -13,13 +13,18 @@ class ExerciseB {
 
         tetrisPiece1.rotatePiece();
         tetrisPiece1.rotatePiece();
-        tetrisPiece1.print();        
-        System.out.println("Piece start: " + tetrisPiece1.getPieceStart());
+        // tetrisPiece1.print();
 
-        TetrisTable tetrisTable = new TetrisTable(8);
-        int translatePosition = 0;
-        tetrisTable.addPiece(tetrisPiece1, translatePosition);
-        tetrisTable.print();
+        // TetrisTable tetrisTable = new TetrisTable(8);
+        // int translatePosition = 0;
+        // tetrisTable.addPiece(tetrisPiece1, translatePosition);
+        // tetrisTable.print();
+
+        int[][] tetrisPieceLimited = tetrisPiece1.getPiecePerimeter();
+
+        System.out.println(tetrisPiece1.printPiece(tetrisPieceLimited));
+
+
 
     }
 }
@@ -72,29 +77,60 @@ class TetrisPiece {
         return rotatedPiece;
     }
 
-    /**
-     * Return the most left culomn with value;
-    */
-    public int getPieceStart(){
-        for(int j = 0; j < mTetrisPiece[0].length; j++ ){
-            for(int i = 0; i < mTetrisPiece.length; i++){
-                if(mTetrisPiece[i][j] != 0)
-                    return j;
-            }            
+    public int[] getPieceLimits() {
+        int minFile =  mTetrisPiece.length;
+        int minColumn = mTetrisPiece.length;
+        int maxFile = 0;
+        int maxColumn = 0;
+        for (int j = 0; j < mTetrisPiece[0].length; j++) {
+            for (int i = 0; i < mTetrisPiece.length; i++) {
+                if (mTetrisPiece[i][j] != 0) {
+                    if (i < minFile)
+                        minFile = i;
+                    if (i > maxFile)
+                        maxFile = i;
+                    if (j < minColumn)
+                        minColumn = j;
+                    if (j > maxColumn)
+                        maxColumn = j;
+                }
+            }
+
         }
-        return mTetrisPiece[0].length;        
+        return new int[] { minFile, minColumn, maxFile, maxColumn };
     }
 
-    @Override
-    public String toString() {
+    public int[][] getPiecePerimeter() {
+        int [] pieceLimit = getPieceLimits();
+        int minFileIndex = pieceLimit[0];
+        int minColumnIndex = pieceLimit[1];
+        int maxFileIndex = pieceLimit[2];
+        int maxColumnIndex = pieceLimit[3];
+
+
+        int[][] newPiece = new int[1 + maxFileIndex - minFileIndex][1 + maxColumnIndex - minColumnIndex];
+        for(int i = minFileIndex; i <= maxFileIndex; i++){
+            for(int j = minColumnIndex; j <= maxColumnIndex; j++){
+                newPiece[i - minFileIndex][j - minColumnIndex] = mTetrisPiece[i][j];
+            }
+        }
+        return newPiece;
+    }
+
+    public String printPiece(int[][] tetrisPiece){
         StringBuilder outputString = new StringBuilder();
-        for (int i = 0; i < mTetrisPiece.length; i++) {
-            for (int j = 0; j < mTetrisPiece[0].length; j++) {
-                outputString.append(mTetrisPiece[i][j] + " ");
+        for (int i = 0; i < tetrisPiece.length; i++) {
+            for (int j = 0; j < tetrisPiece[0].length; j++) {
+                outputString.append(tetrisPiece[i][j] + " ");
             }
             outputString.append("\n");
         }
         return outputString.toString();
+    }
+
+    @Override
+    public String toString() {
+        return printPiece(mTetrisPiece);
     }
 
     public void print() {
@@ -123,7 +159,6 @@ class TetrisTable {
         /*
          * Find the piece start Translate the piece Place the piece
          */
-        int pieceStart = mPiece.getPieceStart();
 
     }
 
