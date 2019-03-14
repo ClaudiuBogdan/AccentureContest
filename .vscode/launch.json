@@ -1,0 +1,19 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - ExerciseB",
+      "request": "launch",
+      "mainClass": "ExerciseB",
+      "cwd": "${workspaceFolder}",
+      "stopOnEntry": false,
+      "args": "Claudiu"
+    },
+    {
+      "type": "java",
+      "name": "CodeLens (Launch) - ExeciseA",
+      "request": "launch",
+      "mainClass": "ExeciseA"
+    }
+  ]
+}
