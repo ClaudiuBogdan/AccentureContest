@@ -23,6 +23,9 @@ class ExerciseB {
         int[][] tetrisPieceLimited = tetrisPiece1.getPiecePerimeter();
 
         System.out.println(tetrisPiece1.printPiece(tetrisPieceLimited));
+        System.out.println(tetrisPiece1.getColumnMaxHeight(tetrisPieceLimited, 0));
+        System.out.println(tetrisPiece1.getColumnMaxHeight(tetrisPieceLimited, 1));
+        System.out.println(tetrisPiece1.getColumnMaxHeight(tetrisPieceLimited, 2));
 
 
 
@@ -115,6 +118,20 @@ class TetrisPiece {
             }
         }
         return newPiece;
+    }
+
+    /**
+     * The height of the piece is computed from up towards down.
+     */
+    public int getColumnMaxHeight(int[][] tetrisPiece, int columnIndex){
+        int maxHeight = 0;
+        for(int i = 0; i < tetrisPiece.length; i++){
+            if(tetrisPiece[i][columnIndex] != 0){
+                if(maxHeight - 1 < i )
+                    maxHeight = i + 1;
+            }            
+        }
+        return maxHeight;
     }
 
     public String printPiece(int[][] tetrisPiece){
