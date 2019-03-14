@@ -27,8 +27,6 @@ class ExerciseB {
         System.out.println(tetrisPiece1.getColumnMaxHeight(tetrisPieceLimited, 1));
         System.out.println(tetrisPiece1.getColumnMaxHeight(tetrisPieceLimited, 2));
 
-
-
     }
 }
 
@@ -81,7 +79,7 @@ class TetrisPiece {
     }
 
     public int[] getPieceLimits() {
-        int minFile =  mTetrisPiece.length;
+        int minFile = mTetrisPiece.length;
         int minColumn = mTetrisPiece.length;
         int maxFile = 0;
         int maxColumn = 0;
@@ -104,16 +102,15 @@ class TetrisPiece {
     }
 
     public int[][] getPiecePerimeter() {
-        int [] pieceLimit = getPieceLimits();
+        int[] pieceLimit = getPieceLimits();
         int minFileIndex = pieceLimit[0];
         int minColumnIndex = pieceLimit[1];
         int maxFileIndex = pieceLimit[2];
         int maxColumnIndex = pieceLimit[3];
 
-
         int[][] newPiece = new int[1 + maxFileIndex - minFileIndex][1 + maxColumnIndex - minColumnIndex];
-        for(int i = minFileIndex; i <= maxFileIndex; i++){
-            for(int j = minColumnIndex; j <= maxColumnIndex; j++){
+        for (int i = minFileIndex; i <= maxFileIndex; i++) {
+            for (int j = minColumnIndex; j <= maxColumnIndex; j++) {
                 newPiece[i - minFileIndex][j - minColumnIndex] = mTetrisPiece[i][j];
             }
         }
@@ -123,18 +120,32 @@ class TetrisPiece {
     /**
      * The height of the piece is computed from up towards down.
      */
-    public int getColumnMaxHeight(int[][] tetrisPiece, int columnIndex){
+    public static int getColumnMaxHeight(int[][] tetrisPiece, int columnIndex) {
         int maxHeight = 0;
-        for(int i = 0; i < tetrisPiece.length; i++){
-            if(tetrisPiece[i][columnIndex] != 0){
-                if(maxHeight - 1 < i )
+        for (int i = 0; i < tetrisPiece.length; i++) {
+            if (tetrisPiece[i][columnIndex] != 0) {
+                if (maxHeight - 1 < i)
                     maxHeight = i + 1;
-            }            
+            }
         }
         return maxHeight;
     }
 
-    public String printPiece(int[][] tetrisPiece){
+    /**
+     * The height of the piece is computed from up towards down.
+     */
+    public static int getColumnMinHeight(int[][] tetrisPiece, int columnIndex) {
+        int minHeight = 0;
+        for (int i = tetrisPiece.length - 1; i >= 0; i--) {
+            if (tetrisPiece[i][columnIndex] != 0) {
+                if (minHeight - 1 > i)
+                    minHeight = i + 1;
+            }
+        }
+        return maxHeight;
+    }
+
+    public String printPiece(int[][] tetrisPiece) {
         StringBuilder outputString = new StringBuilder();
         for (int i = 0; i < tetrisPiece.length; i++) {
             for (int j = 0; j < tetrisPiece[0].length; j++) {
@@ -176,7 +187,49 @@ class TetrisTable {
         /*
          * Find the piece start Translate the piece Place the piece
          */
+        int[][] mPieceLimited = mPiece.getPiecePerimeter();
 
+        int validColumn = Integer.MIN_VALUE;
+        for (int pieceColumToValidate = 0; pieceColumToValidate < mPieceLimited[0].length; pieceColumToValidate++) {
+            boolean isCorrectPosition = validatePiecePosition(mPieceLimited, translatePosition, pieceColumToValidate);
+            if (isCorrectPosition) {
+                validColumn = pieceColumToValidate;
+                break;
+            }
+        }
+
+        int pieceHeightReference = TetrisPiece.getColumnMaxHeight(mPieceLimited, validColumn);
+
+        // Check left piece position
+        for (int i = pieceColumn - 1; i >= 0; i--) {
+            int tableColumnLeftHeight = mTetrisTable[translatePosition + i] + tableColumnHeight;
+        }
+        // Check right piece position
+        for (int j = pieceColumn + 1; j < mPieceLimited[0].length; j++) {
+            int tableColumnRightHeight = mTetrisTable[translatePosition + j];
+            if (pieceHeightReference - TetrisPiece.getColumnMaxHeight(mPieceLimited, j) + 1 <= tableColumnRightHeight)
+                return false;
+        }
+
+    }
+
+    private boolean validatePiecePosition(int[][] mPieceLimited, int translatePosition, int pieceColumn) {
+        int tableColumnHeight = mTetrisTable[translatePosition + pieceColumToValidate];
+        int pieceHeightReference = TetrisPiece.getColumnMaxHeight(mPieceLimited, pieceColumToValidate)
+                + tableColumnHeight;
+        // Check left piece position
+        for (int i = pieceColumn - 1; i >= 0; i--) {
+            int tableColumnLeftHeight = mTetrisTable[translatePosition + i];
+            if (pieceHeightReference - TetrisPiece.getColumnMaxHeight(mPieceLimited, i) + 1 <= tableColumnLeftHeight)
+                return false;
+        }
+        // Check right piece position
+        for (int j = pieceColumn + 1; j < mPieceLimited[0].length; j++) {
+            int tableColumnRightHeight = mTetrisTable[translatePosition + j];
+            if (pieceHeightReference - TetrisPiece.getColumnMaxHeight(mPieceLimited, j) + 1 <= tableColumnRightHeight)
+                return false;
+        }
+        return true;
     }
 
     @Override
