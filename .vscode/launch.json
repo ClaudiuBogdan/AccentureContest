@@ -1,19 +1,22 @@
 {
   "configurations": [
     {
-      "type": "java",
-      "name": "CodeLens (Launch) - ExerciseB",
-      "request": "launch",
-      "mainClass": "ExerciseB",
-      "cwd": "${workspaceFolder}",
-      "stopOnEntry": false,
-      "args": "Claudiu"
+        "type": "java",
+        "name": "CodeLens (Launch) - ExerciseB",
+        "request": "launch",
+        "mainClass": "ExerciseB",
+        "cwd": "${workspaceFolder}",
+        "stopOnEntry": false,
+        "args": "3 6"
     },
     {
-      "type": "java",
-      "name": "CodeLens (Launch) - ExeciseA",
-      "request": "launch",
-      "mainClass": "ExeciseA"
+        "type": "java",
+        "name": "ExerciseA",
+        "request": "launch",
+        "mainClass": "ExerciseA",
+        "cwd": "${workspaceFolder}",
+        "stopOnEntry": false,
+        "args": "3 6"
     }
-  ]
+]
 }
