@@ -14,18 +14,16 @@ class ExerciseA {
                 int tetrisColumns = scanner.nextInt();
                 int tetrisPieces = scanner.nextInt();
 
-                System.out.print("Columns: " + tetrisColumns);
-                System.out.print(" Pieces: " + tetrisPieces);
-                System.out.println();
+                TetrisTable tetrisTable = new TetrisTable(tetrisColumns);
                 for(int i = 0; i < tetrisPieces; i++){
                     int pieceId = scanner.nextInt();
                     int pieceRotation = scanner.nextInt();
                     int pieceTranslation = scanner.nextInt();
-                    System.out.print("Id: " + pieceId);
-                    System.out.print(" Rotation: " + pieceRotation);
-                    System.out.print(" Translation: " + pieceTranslation);
-                    System.out.println();
-                }                
+
+                    TetrisPiece tetrisPiece = new TetrisPiece(pieceId, pieceRotation);
+                    tetrisTable.addPiece(tetrisPiece, pieceTranslation - 1);
+                }     
+                tetrisTable.print();           
             }
             scanner.close();
         } catch (FileNotFoundException ex) {

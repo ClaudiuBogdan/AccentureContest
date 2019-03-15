@@ -6,13 +6,6 @@ class ExerciseB {
     public static void main(String[] args) {
         System.out.println("Hello world!: " + args[0]);
         TetrisPiece tetrisPiece1 = new TetrisPiece(5);
-        // TetrisPiece tetrisPiece2 = new TetrisPiece(2);
-        // TetrisPiece tetrisPiece3 = new TetrisPiece(3);
-        // TetrisPiece tetrisPiece4 = new TetrisPiece(4);
-        // TetrisPiece tetrisPiece5 = new TetrisPiece(5);
-        // TetrisPiece tetrisPiece6 = new TetrisPiece(6);
-        // TetrisPiece tetrisPiece7 = new TetrisPiece(7);
-
         tetrisPiece1.rotatePiece();
         tetrisPiece1.rotatePiece();
         tetrisPiece1.rotatePiece();
@@ -45,9 +38,13 @@ class TetrisPiece {
 
     public TetrisPiece(int pieceID) {
         mTetrisPiece = getElementByID(pieceID);
+    }
 
-        System.out.println("Created piece: " + pieceID);
-        System.out.println(this.toString());
+    public TetrisPiece(int pieceID, int pieceRotation) {
+        this(pieceID);
+        for (int i = 0; i < pieceRotation / 90; i++) {
+            this.rotatePiece();
+        }
     }
 
     /**
@@ -143,7 +140,7 @@ class TetrisPiece {
         int minHeight = tetrisPiece.length;
         for (int i = tetrisPiece.length - 1; i >= 0; i--) {
             if (tetrisPiece[i][columnIndex] != 0) {
-                if (minHeight > i )
+                if (minHeight > i)
                     minHeight = i;
             }
         }
@@ -181,7 +178,7 @@ class TetrisTable {
     private int[] mTetrisTable;
 
     public TetrisTable(int numberOfColumns) {
-        System.out.println("Created table: " + numberOfColumns);
+        // System.out.println("Created table: " + numberOfColumns);
         mTetrisTable = new int[numberOfColumns];
     }
 
@@ -198,15 +195,11 @@ class TetrisTable {
 
         int tableColumnHeight = mTetrisTable[translatePosition + validColumn];
         int pieceHeightReference = TetrisPiece.getColumnMaxHeight(mPieceLimited, validColumn) + tableColumnHeight;
-        
-        System.out.println("Index of column max height: " + validColumn);
-        System.out.println("Column max height: " + pieceHeightReference);
 
-        for(int i = 0; i < mPieceLimited[0].length; i++){
+        for (int i = 0; i < mPieceLimited[0].length; i++) {
             int spacesBetweenMaxHeight = TetrisPiece.getColumnMinHeight(mPieceLimited, i);
             mTetrisTable[translatePosition + i] = pieceHeightReference - spacesBetweenMaxHeight;
         }
-        print();
     }
 
     private int validatePiecePosition(int[][] mPieceLimited, int translatePosition) {
