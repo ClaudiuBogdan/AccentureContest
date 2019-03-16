@@ -14,6 +14,8 @@ class ExerciseA {
                 int tetrisColumns = scanner.nextInt();
                 int tetrisPieces = scanner.nextInt();
 
+                if(tetrisPieces == 0 && tetrisColumns == 0)
+                    break;
                 TetrisTable tetrisTable = new TetrisTable(tetrisColumns);
                 for (int i = 0; i < tetrisPieces; i++) {
                     int pieceId = scanner.nextInt();
